@@ -1,0 +1,14 @@
+<footer class="site-footer">
+  <div class="container container--lg">
+    <div class="site-footer__copyright">
+      {% if site.params.footer.content %}
+        <span>{{ site.params.footer.content | safe }}</span>
+      {% endif %}
+      {% for action in site.params.footer.links %}
+        {% set include_dict = {'action': action} %}
+        {% include "action.html" %}
+      {% endfor %}
+    </div>
+
+  </div>
+</footer>

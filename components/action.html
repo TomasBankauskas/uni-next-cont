@@ -1,0 +1,5 @@
+{% set action = include_dict.action %}
+<a href="{{ action.url | relative_url }}"
+  {% if action.new_window %} target="_blank"{% endif %}
+  {% if action.new_window or action.no_follow %} rel="{% if action.new_window %}noopener {% endif %}{% if action.no_follow %}nofollow{% endif %}"{% endif %}
+  {{ classNames({'btn': action.style != 'link', 'btn--secondary': action.style == 'secondary'}) }}>{{ action.label }}</a>

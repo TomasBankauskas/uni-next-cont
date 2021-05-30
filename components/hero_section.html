@@ -1,0 +1,38 @@
+{% set section = include_dict.section %}
+
+<section {{ classNames('section', 'hero', {'bg-image': section.has_background and background.background_image, 'inverse bg-blue': section.has_background and background_color == 'blue', 'bg-gray': section.has_background and background_color == 'gray', 'section--padding': section.has_background or section.image}) }}>
+
+  {% if section.has_background and background.background_image %}
+  <div class="bg-image__image" style="background-image: url('{{ background.background_image | relative_url }}'); opacity: {{ background_opacity }}; background-size: {{ background_size }}; background-repeat: {{ background_repeat }}"></div>
+  {% endif %}
+
+  <div class="container container--lg">
+    <div {{ classNames('flex', 'flex--middle', 'flex--center', 'flex--col-2', { 'align-center': section.align == 'center', 'align-right': section.align == 'right' }) }}>
+
+      {% if section.image %}
+      <div {{ classNames('cell', 'section__media', { 'section__media--right': section.image_position == 'right' }) }}>
+        <img src="{{ section.image | relative_url }}" alt="{{ section.image_alt }}" />
+      </div>
+      {% endif %}
+
+      <div class="cell section__body">
+        {% if section.title %}
+        <h1 class="section__title">{{ section.title }}</h1>
+        {% endif %}
+        {% if section.subtitle %}
+        <div class="section__copy">
+          <p>{{ section.subtitle }}</p>
+        </div>
+        {% endif %}
+        {% if section.actions %}
+        <div class="section__actions btn-group">
+          {% set include_dict = {'actions': section.actions} %}
+          {% include "section_actions.html" %}
+        </div>
+        {% endif %}
+      </div>
+
+    </div>
+  </div>
+
+</section>

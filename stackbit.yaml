@@ -1,13 +1,263 @@
 stackbitVersion: ~0.3.0
-ssgName: nextjs
-cmsName: contentful
-nodeVersion: '12'
-import:
-  type: contentful
-  contentFile: contentful-export/export.json
-  spaceIdEnvVar: CONTENTFUL_SPACE_ID
-  accessTokenEnvVar: CONTENTFUL_DELIVERY_TOKEN
+ssgName: unibit
+buildCommand: unibit build
+publishDir: output
+staticDir: static
+uploadDir: images
+dataDir: data
+pagesDir: content
+pageLayoutKey: layout
+metadata:
+  title: Starter
+  description: "Ultra customizable starter. A developers' favorite."
+  author: Stackbit
+  authorURL: 'https://www.stackbit.com'
+  images:
+    small: images/demo-256x192.png
+    large: images/demo-1024x768.png
+stackbit_banner:
+  show_banner: true
+  name: Starter
+  create_url: 'https://app.stackbit.com/create?theme=starter'
+  github_url: 'https://github.com/stackbit-themes/starter-unibit'
 models:
+  config:
+    type: data
+    label: Site Configuration
+    fields:
+      - type: string
+        name: title
+        label: Title
+        description: Site title
+        required: true
+      - type: string
+        name: path_prefix
+        label: Base URL
+        description: >-
+          The base URL of this site. Useful for sites hosted under specific
+          path, e.g.: https://www.example.com/my-site/
+        required: true
+        hidden: true
+      - type: string
+        name: domain
+        label: Domain
+        description: >-
+          The domain of your site, including the protocol, e.g.
+          https://www.example.com/
+      - type: image
+        name: favicon
+        label: Favicon
+        description: A square icon that represents your website
+      - type: model
+        name: header
+        label: Header Configuration
+        models:
+          - header
+      - type: model
+        name: footer
+        label: Footer Configuration
+        models:
+          - footer
+    file: config.json
+  header:
+    type: object
+    label: Header Configuration
+    fields:
+      - type: image
+        name: logo
+        label: Logo
+        description: The logo image displayed in the header
+      - type: string
+        name: logo_alt
+        label: Logo Alt Text
+        description: The alt text of the logo image
+      - type: list
+        name: nav_links
+        label: Navigation Menu Links
+        description: List of navigation links in header
+        items:
+          type: model
+          models:
+            - action
+  footer:
+    type: object
+    label: Footer Configuration
+    labelField: content
+    fields:
+      - type: string
+        name: content
+        label: Footer Content
+        description: The copyright text displayed in the footer
   page:
     type: page
-    urlPath: '{slug}'
+    label: Page
+    layout: page
+    fields:
+      - type: string
+        name: title
+        label: Title
+        description: The title of the page
+        required: true
+      - type: model
+        name: seo
+        models:
+          - stackbit_page_meta
+  advanced:
+    type: page
+    label: Advanced Page
+    layout: advanced
+    hideContent: true
+    fields:
+      - type: string
+        name: title
+        label: Title
+        description: The title of the page
+        required: true
+      - type: list
+        name: sections
+        label: Sections
+        description: Page sections
+        items:
+          type: model
+          models:
+            - feature_section
+            - hero_section
+      - type: model
+        name: seo
+        models:
+          - stackbit_page_meta
+  section:
+    type: object
+    label: Section
+    labelField: title
+    fields:
+      - type: string
+        name: section_id
+        label: Section ID
+        description: 'A unique identifier of the section, must not contain whitespace'
+      - type: string
+        name: title
+        label: Title
+        description: The title of the section
+  feature_section:
+    type: object
+    label: Feature Section
+    extends:
+      - section
+    fields:
+      - type: markdown
+        name: content
+        label: Content
+        description: The text content of the feature
+      - type: list
+        name: actions
+        label: Action Buttons
+        items:
+          type: model
+          models:
+            - action
+      - type: image
+        name: image
+        label: Image
+        description: The image of the feature
+      - type: string
+        name: image_alt
+        label: Image Alt Text
+        description: The alt text of the image
+      - type: enum
+        name: image_position
+        label: Image Position
+        options:
+          - left
+          - right
+        default: left
+        description: The position of the image
+  hero_section:
+    type: object
+    label: Hero Section
+    extends:
+      - section
+    fields:
+      - type: markdown
+        name: content
+        label: Content
+        description: The text content of the section
+      - type: list
+        name: actions
+        label: Action Buttons
+        items:
+          type: model
+          models:
+            - action
+  action:
+    type: object
+    label: Action
+    labelField: label
+    fields:
+      - type: string
+        name: label
+        label: Label
+        required: true
+      - type: string
+        name: url
+        label: URL
+        required: true
+        default: '#'
+      - type: enum
+        name: style
+        label: Style
+        options:
+          - link
+          - button
+        default: link
+        required: true
+  stackbit_page_meta:
+    type: object
+    label: Page meta data
+    fields:
+      - type: string
+        name: title
+        label: Title
+        description: The page title that goes into the <title> tag
+        default: ''
+      - type: string
+        name: description
+        label: Description
+        description: The page description that goes into the <meta name="description"> tag
+        default: ''
+      - type: list
+        name: robots
+        label: Robots
+        description: The items that go into the <meta name="robots"> tag
+        items:
+          type: enum
+          options:
+            - all
+            - index
+            - follow
+            - noindex
+            - nofollow
+            - noimageindex
+            - notranslate
+            - none
+      - type: list
+        name: extra
+        label: Extra
+        description: >-
+          Additional definition for specific meta tags such as open-graph,
+          twitter, etc.
+        items:
+          type: object
+          labelField: name
+          fields:
+            - type: string
+              name: name
+              default: ''
+            - type: string
+              name: value
+              default: ''
+            - type: string
+              name: keyName
+              default: name
+            - type: boolean
+              name: relativeUrl

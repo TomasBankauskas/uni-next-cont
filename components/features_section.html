@@ -1,0 +1,47 @@
+{% set section = include_dict.section %}
+<section class="section section--features">
+
+  {% if section.title %}
+  <div class="container container--md align-center">
+    <h2 class="section__title">{{ section.title }}</h2>
+  </div>
+  {% endif %}
+
+  <div class="container container--lg">
+
+    {% for feature in section.features %}
+    <div {{ classNames('flex', 'flex--middle', 'flex--center', 'flex--col-2', { 'align-center': feature.align == 'center', 'align-right': feature.align == 'right' }) }}>
+
+      {% if feature.image %}
+      <div {{ classNames('cell', 'section__media', { 'section__media--right': feature.image_position == 'right' }) }}>
+        <img src="{{ feature.image | relative_url }}" alt="{{ feature.image_alt }}" />
+      </div>
+      {% endif %}
+
+      <div class="section__body cell">
+        {% if feature.title %}
+          {% if section.title %}
+          <h3 class="section__title">{{ feature.title }}</h3>
+          {% else %}
+          <h2 class="section__title">{{ feature.title }}</h2>
+          {% endif %}
+        {% endif %}
+        {% if feature.content %}
+        <div class="section__copy">
+          {{ feature.content | markdownify }}
+        </div>
+        {% endif %}
+        {% if feature.actions %}
+        <div class="section__actions btn-group">
+          {% set include_dict = {'actions': feature.actions} %}
+          {% include "section_actions.html" %}
+        </div>
+        {% endif %}
+      </div>
+
+    </div>
+    {% endfor %}
+
+  </div>
+
+</section>

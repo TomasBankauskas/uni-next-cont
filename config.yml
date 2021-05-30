@@ -1,0 +1,34 @@
+baseurl: "/"
+title: "Stackbit Starter Theme"
+init_js: "js/init.js"
+page_load_js: "js/page-load.js"
+page_unload_js: "js/page-unload.js"
+params:
+  header:
+    title: Starter
+    has_nav: true
+    nav_links:
+      - label: Features
+        url: /features
+        style: link
+      - label: Blog
+        url: /blog
+        style: link
+      - label: About
+        url: /about
+        style: link
+      - label: Style Guide
+        url: /style-guide
+        style: link
+      - label: Contact Us
+        url: /contact
+        style: primary
+  footer:
+    content: >-
+      &copy; Stackbit. All rights reserved. This Jamstack site was created with <a href="https://www.stackbit.com/?utm_source=deployed-footer" target="_blank" rel="noopener">Stackbit</a>. Create yours <a href="https://app.stackbit.com/create?theme=starter&utm_source=deployed-footer" target="_blank" rel="noopener">now</a>
+sass:
+  input_file: sass/main.scss
+  output_file: css/main.css
+  indentWidth: 4
+  outputStyle: compressed
+  precision: 10
